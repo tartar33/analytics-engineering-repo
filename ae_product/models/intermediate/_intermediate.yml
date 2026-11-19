@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: int_attributed_actions
+    description: >
+      Product actions with document IDs resolved
+      using direct or contextual attribution.
+
+    columns:
+      - name: event_id
+        data_tests:
+          - unique
+          - not_null
+
+      - name: attribution_method
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - direct
+                  - inferred
+                  - unresolved

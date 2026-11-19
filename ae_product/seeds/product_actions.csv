@@ -1,0 +1,18 @@
+event_id,event_ts,source,account_id,device_id,document_id,action_name
+evt_001,2026-10-01 09:00:00,backend,A01,D01,DOC100,document_opened
+evt_002,2026-10-01 09:00:03,frontend,A01,D01,,editor_viewed
+evt_003,2026-10-01 09:00:06,backend,A01,D01,DOC100,field_added
+evt_004,2026-10-01 09:00:22,backend,A01,D01,DOC100,field_added
+evt_005,2026-10-01 09:00:35,frontend,A01,D01,,save_clicked
+evt_006,2026-10-01 09:00:38,backend,A01,D01,DOC100,document_saved
+evt_007,2026-10-01 09:05:01,backend,A01,D01,DOC200,document_opened
+evt_008,2026-10-01 09:05:04,frontend,A01,D01,,editor_viewed
+evt_009,2026-10-01 09:05:11,backend,A01,D01,DOC200,field_added
+evt_010,2026-10-01 09:05:15,frontend,A01,D01,,submit_clicked
+evt_011,2026-10-01 09:05:18,backend,A01,D01,DOC200,document_submitted
+evt_012,2026-10-01 09:06:00,backend,A01,D01,DOC300,document_opened
+evt_013,2026-10-01 09:06:05,frontend,A01,D01,,editor_viewed
+evt_014,2026-10-01 09:06:10,backend,A01,D01,DOC200,field_added
+evt_015,2026-10-01 09:25:00,backend,A01,D01,DOC100,document_opened
+evt_016,2026-10-01 09:25:04,frontend,A01,D01,,editor_viewed
+evt_017,2026-10-01 09:25:07,backend,A01,D01,DOC100,field_added
