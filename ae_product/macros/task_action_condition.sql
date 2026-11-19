@@ -10,7 +10,13 @@
             'completion': [
                 'document_saved',
                 'document_submitted'
-            ]
+            ],
+            'failure': []
+        },
+        'document_review': {
+            'activity': ['review_comment_added'],
+            'completion': ['document_approved'],
+            'failure': ['document_rejected']
         }
     } %}
 
@@ -28,13 +34,19 @@
         ) }}
     {% endif %}
 
-    (
-        {{ column_name }} in (
-            {% for action in groups[action_group] %}
-                '{{ action }}'
-                {% if not loop.last %},{% endif %}
-            {% endfor %}
+    {% set actions = groups[action_group] %}
+
+    {% if actions | length == 0 %}
+        (false)
+    {% else %}
+        (
+            {{ column_name }} in (
+                {% for action in actions %}
+                    '{{ action }}'
+                    {% if not loop.last %},{% endif %}
+                {% endfor %}
+            )
         )
-    )
+    {% endif %}
 
 {% endmacro %}
