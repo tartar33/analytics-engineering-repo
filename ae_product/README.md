@@ -1,15 +1,11 @@
-Welcome to your new dbt project!
+# dbt Project: ae_product
 
-### Using the starter project
+This directory contains the dbt Core and DuckDB implementation of the Product Analytics Engineering portfolio project.
 
-Try running the following commands:
-- dbt run
-- dbt test
+See the [main project README](../README.md) for the architecture, technical modeling decisions, setup instructions, validation strategy, and limitations.
 
+To build and test the project from this directory:
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+```bash
+dbt build
+```
