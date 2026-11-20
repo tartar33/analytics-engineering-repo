@@ -14,7 +14,7 @@ Product analytics becomes difficult when:
 - Behavioral events originate from different systems.
 - Events lack critical business entity identifiers.
 - Meaningful workflows are not explicitly instrumented.
-- A single user workflow spans multiple sessions.
+- Activity on the same document can occur in distinct sessions.
 - Product teams need consistent metrics across features and reporting periods.
 
 Without a shared modeling foundation, analysts must repeatedly reconstruct business logic from raw events, creating duplicated SQL and inconsistent metrics.
@@ -96,7 +96,7 @@ The task-modeling layer groups actions into attempts and identifies:
 
 Multiple task attempts can occur within a single document session.
 
-Synthetic timestamps can represent inferred activity boundaries, but they should not be mistaken for precisely observed workflow start or end times.
+An auxiliary model illustrates inferred activity boundaries, while task-attempt durations use observed qualifying event timestamps. Inferred boundaries should not be mistaken for precisely observed workflow start or end times.
 
 ### 4. Reusable dbt Macros
 
@@ -112,7 +112,7 @@ Currently supported workflows:
 
 This design reduces duplicated SQL and makes the framework easier to extend.
 
-**Design principle:** Introducing a new workflow should require configuration changes rather than rebuilding an entire transformation pipeline.
+**Design principle:** New workflows can be introduced by extending centralized action definitions and reusing the shared transformation logic.
 
 ### 5. Consistent Metrics Across Reporting Periods
 
@@ -132,6 +132,10 @@ Each reporting period aggregates from task-level records rather than averaging p
 ## Project Structure
 
 ```text
+README.md
+docs/
+├── 001-sessionization.md
+└── 002-metric-definitions.md
 ae_product/
 ├── seeds/
 │   └── product_actions.csv
@@ -142,7 +146,8 @@ ae_product/
 │       ├── fct_document_task_attempts.sql
 │       ├── fct_document_task_outcomes.sql
 │       ├── agg_document_tasks_daily.sql
-│       └── agg_document_tasks_by_period.sql
+│       ├── agg_document_tasks_by_period.sql
+│       └── _unit_tests.yml
 ├── macros/
 │   ├── task_action_condition.sql
 │   ├── build_task_attempts.sql
@@ -162,8 +167,15 @@ The project includes automated tests for:
 - Consistency between original and generalized task models
 - Reconciliation of daily metrics to task records
 - Reconciliation across reporting periods
+- Metric-rate and duration integrity
+- Duplicate-completion handling through a dbt unit test
 
-The latest full build processed 30 synthetic events, built 10 models, and passed all 10 data tests.
+The latest full build loaded 31 synthetic events, built 10 models, and passed all 13 automated tests (12 data tests and 1 unit test). All 24 build steps completed without warnings or errors.
+
+## Supporting Documentation
+
+- [Sessionization Architecture Decision Record](docs/001-sessionization.md) — Design rationale, late-arriving events, and session-ID stability.
+- [Metric Definitions and Reporting Assumptions](docs/002-metric-definitions.md) — Outcome classifications, metric formulas, reporting grains, and limitations.
 
 ## Example: Self-Service Metrics
 
@@ -222,7 +234,7 @@ Important limitations include:
 - Entity attribution uses a conservative contextual matching rule and does not resolve all ambiguous cases.
 - The sample data simulates different event sources rather than implementing independent ingestion pipelines.
 - Session identifiers based on chronological sequence numbers may change when historical events arrive late.
-- Task-attempt logic assumes relatively simple event sequences; overlapping tasks, repeated terminal events, and other edge cases require more sophisticated handling.
+- Task-attempt logic ignores consecutive terminal events without intervening activity. Overlapping workflows and more complex duplicate-event patterns would require additional business rules.
 - Document rejection is defined as a failed review for this demonstration, although a real product might classify it as a completed review with a rejected decision.
 - Presumed abandonment is inferred using a 10-minute inactivity threshold and the latest event timestamp in the dataset. It is not directly observed user behavior.
 - Additional tests would be required before applying these models to production event streams.
