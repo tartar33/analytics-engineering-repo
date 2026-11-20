@@ -1,4 +1,4 @@
-# Product Analytics Engineering
+# Analytics Engineering for Software Porduct
 ### Event-to-Workflow Data Modeling with dbt & DuckDB
 
 Transforming fragmented product events into reliable, reusable data models and consistent product metrics.
