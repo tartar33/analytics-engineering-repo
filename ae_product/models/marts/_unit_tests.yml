@@ -1,0 +1,63 @@
+version: 2
+
+unit_tests:
+  - name: duplicate_completion_does_not_create_attempt
+    description: >
+      Duplicate terminal events should not create empty
+      task attempts or shift subsequent attempt numbers.
+
+    model: fct_document_task_attempts
+
+    given:
+      - input: ref('int_document_sessions')
+        rows:
+          - event_id: e1
+            event_ts: '2026-10-01 09:00:00'
+            account_id: A01
+            resolved_document_id: DOC999
+            session_id: A01_DOC999_S001
+            action_name: field_added
+
+          - event_id: e2
+            event_ts: '2026-10-01 09:01:00'
+            account_id: A01
+            resolved_document_id: DOC999
+            session_id: A01_DOC999_S001
+            action_name: document_saved
+
+          - event_id: e3
+            event_ts: '2026-10-01 09:01:01'
+            account_id: A01
+            resolved_document_id: DOC999
+            session_id: A01_DOC999_S001
+            action_name: document_saved
+
+          - event_id: e4
+            event_ts: '2026-10-01 09:02:00'
+            account_id: A01
+            resolved_document_id: DOC999
+            session_id: A01_DOC999_S001
+            action_name: field_added
+
+          - event_id: e5
+            event_ts: '2026-10-01 09:03:00'
+            account_id: A01
+            resolved_document_id: DOC999
+            session_id: A01_DOC999_S001
+            action_name: document_saved
+
+    expect:
+      rows:
+        - task_name: document_editing
+          attempt_number: 1
+          activity_action_count: 1
+          task_status: completed
+          completion_ts: '2026-10-01 09:01:00'
+          elapsed_to_completion_ms: 60000
+
+        - task_name: document_editing
+          attempt_number: 2
+          activity_action_count: 1
+          task_status: completed
+          completion_ts: '2026-10-01 09:03:00'
+          elapsed_to_completion_ms: 60000

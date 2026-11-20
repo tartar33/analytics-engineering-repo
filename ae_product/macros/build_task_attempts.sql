@@ -50,6 +50,33 @@ with task_events as (
 
 ),
 
+event_context as (
+
+    select
+        *,
+        lag(task_event_type) over (
+            partition by
+                account_id,
+                resolved_document_id,
+                session_id,
+                task_name
+            order by event_ts, event_id
+        ) as previous_event_type
+
+    from task_events
+
+),
+
+valid_events as (
+
+    select *
+    from event_context
+
+    where task_event_type = 'activity'
+       or previous_event_type = 'activity'
+
+),
+
 numbered_attempts as (
 
     select
@@ -76,7 +103,7 @@ numbered_attempts as (
             0
         ) as attempt_number
 
-    from task_events
+    from valid_events
 
 ),
 
