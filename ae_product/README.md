@@ -1,4 +1,4 @@
-# dbt Project: ae_product
+# dbt Project: product_analytics
 
 This directory contains the dbt Core and DuckDB implementation of the Product Analytics Engineering portfolio project.
 
