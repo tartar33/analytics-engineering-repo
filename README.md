@@ -136,7 +136,7 @@ README.md
 docs/
 ├── 001-sessionization.md
 └── 002-metric-definitions.md
-ae_product/
+product-analytics-framework/
 ├── seeds/
 │   └── product_actions.csv
 ├── models/
@@ -218,7 +218,7 @@ ae_product:
 Then run:
 
 ```bash
-cd ae_product
+cd product-analytics-framework
 dbt debug
 dbt build
 ```
