@@ -29,3 +29,4 @@ evt_027,2026-09-21 10:00:00,frontend,A02,D02,DOC500,review_comment_added
 evt_028,2026-09-21 10:00:20,backend,A02,D02,DOC500,document_approved
 evt_029,2026-06-30 08:00:00,backend,A02,D02,DOC600,field_added
 evt_030,2026-06-30 08:00:15,backend,A02,D02,DOC600,document_saved
+evt_031,2026-10-01 09:27:00,frontend,A01,D01,,editor_viewed
